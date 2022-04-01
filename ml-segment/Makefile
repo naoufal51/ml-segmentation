@@ -4,7 +4,6 @@ STACK_NAME=dev
 BASE_STACK_NAME= naoufal51/ml-infra-1/dev
 PULUMI_CMD=pulumi --non-interactive --stack $(STACK_NAME) --cwd infra/
 
-
 install-deps :
 	sudo apt install -y python3-testresources
 
