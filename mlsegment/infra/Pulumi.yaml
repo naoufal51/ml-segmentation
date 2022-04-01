@@ -1,0 +1,6 @@
+name: mlsegment-infra
+runtime:
+  name: python
+  options:
+    virtualenv: venv
+description: Infrastructure for Ml segmentation model
