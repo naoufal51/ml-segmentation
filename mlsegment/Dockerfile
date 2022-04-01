@@ -18,4 +18,4 @@ RUN poetry install --no-interaction --no-ansi --no-dev
 COPY . .
 
 WORKDIR /mlsegment/src
-ENTRYPOINT uvicorn mlsegment.serve.segment:app --host 0.0.0.0 --port $LISTEN_PORT --workers 2
+ENTRYPOINT uvicorn mlsegment.serve.serve:app --host 0.0.0.0 --port $LISTEN_PORT --workers 2
