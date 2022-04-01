@@ -17,7 +17,7 @@ provider = k8s.Provider('Provider', kubeconfig=basestack.require_output("kubecon
 
 
 # Create repository
-repo = aws.ecr.Repository("mlsegment")
+repo = aws.ecr.Repository("ml-segment")
 
 
 # Build docker image form a local Dockerfile context in the
@@ -43,7 +43,7 @@ def get_registry_info(rid):
 image_name = repo.repository_url
 registry_info = repo.registry_id.apply(get_registry_info)
 
-image = docker.Image("mlsegment",
+image = docker.Image("ml-segment",
                      image_name=image_name,
                      build="../",
                      skip_push=False,
@@ -52,10 +52,10 @@ image = docker.Image("mlsegment",
 
 
 
-app_labels = {"app": "mlsegment"}
+app_labels = {"app": "ml-segment"}
 
 ml = k8s.apps.v1.Deployment(
-    "mlsegment-serving",
+    "ml-segment-serving",
     metadata=k8s.meta.v1.ObjectMetaArgs(
         labels=app_labels,
     ),
@@ -70,7 +70,7 @@ ml = k8s.apps.v1.Deployment(
             ),
             spec=k8s.core.v1.PodSpecArgs(
                 containers=[k8s.core.v1.ContainerArgs(
-                    name='mlsegment-container',
+                    name='ml-segment-container',
                     image=image.image_name,
                     ports=[k8s.core.v1.ContainerPortArgs(
                         name = 'http',
@@ -92,9 +92,9 @@ ml = k8s.apps.v1.Deployment(
     opts=pulumi.ResourceOptions(provider=provider))
 
 mymodel_service = k8s.core.v1.Service(
-    "mlsegment-service",
+    "ml-segment-service",
     metadata=ObjectMetaArgs(
-        name="mlsegment-service",
+        name="ml-segment-service",
         labels=app_labels,
     ),
     spec=k8s.core.v1.ServiceSpecArgs(
@@ -107,9 +107,9 @@ mymodel_service = k8s.core.v1.Service(
     opts=pulumi.ResourceOptions(provider=provider))
 
 ##
-mymodel_traefik_route = TraefikRoute('mlsegment-route',
+mymodel_traefik_route = TraefikRoute('ml-segment-route',
                                       TraefikRouteArgs(
-                                          prefix='/models/mlsegment',
+                                          prefix='/models/ml-segment',
                                           service=mymodel_service,
                                           namespace='default',
                                       ),

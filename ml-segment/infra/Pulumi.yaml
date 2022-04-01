@@ -1,4 +1,4 @@
-name: mlsegment-infra
+name: ml-segment-infra
 runtime:
   name: python
   options:
