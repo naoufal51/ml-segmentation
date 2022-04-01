@@ -24,6 +24,7 @@ repo = aws.ecr.Repository("mlsegment")
 
 
 # Get registry info (creds and endpoint).
+
 def get_registry_info(rid):
     creds = aws.ecr.get_credentials(registry_id=rid)
     decoded = base64.b64decode(creds.authorization_token).decode()
