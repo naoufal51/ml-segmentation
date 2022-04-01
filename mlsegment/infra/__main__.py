@@ -82,9 +82,6 @@ ml = k8s.apps.v1.Deployment(
                         k8s.core.v1.EnvVarArgs(
                             name="MLFLOW_TRACKING_URI",
                             value=basestack.require_output('mlflowTrackingURI'),
-                        ), k8s.core.v1.EnvVarArgs(
-                            name="MLFLOW_RUN_ID",
-                            value=config.require("runID")
                         )],
 
                 )],
