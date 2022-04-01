@@ -16,10 +16,11 @@ install-deps :
 #train:
 #	poetry run train
 
-dvc-pull:
-	poetry run dvc --cd data/ pull
+#dvc-pull:
+#	poetry run dvc --cd data/ pull
 
-deploy:dvc-pull
+deploy:
+#dvc-pull
 	$(PULUMI_CMD) stack init $(STACK_NAME) || true
 	$(PULUMI_CMD) config set aws:region $(AWS_REGION)
 	$(PULUMI_CMD) config set baseStackName $(BASE_STACK_NAME)
