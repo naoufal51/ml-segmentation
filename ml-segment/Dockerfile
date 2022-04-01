@@ -6,7 +6,7 @@ EXPOSE 80
 ENV LISTEN_PORT 80
 
 # System dependencies
-RUN apt update && apt install -y python3-testresources && apt install -y libgomp1
+RUN apt update && apt install -y libgomp1
 RUN pip3 install poetry
 
 # Project dependencies
