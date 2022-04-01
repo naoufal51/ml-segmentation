@@ -61,7 +61,7 @@ ml = k8s.apps.v1.Deployment(
                 containers=[k8s.core.v1.ContainerArgs(
                     name='ml-segment-container',
                     image=image.image_name,
-                    ports=[k8s.core.v1.ContainerArgs(
+                    ports=[k8s.core.v1.ContainerPortArgs(
                         name='http',
                         container_port=80,
                     )],
