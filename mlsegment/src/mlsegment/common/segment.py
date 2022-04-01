@@ -24,9 +24,9 @@ def inference(model, input_image, max_size=512):
     input_batch = input_tensor.unsqueeze(0)  # create a mini-batch as expected by the model
 
     # move the input and model to GPU for speed if available
-    if torch.cuda.is_available():
-        input_batch = input_batch.to('cuda')
-        model.to('cuda')
+    # if torch.cuda.is_available():
+    #     input_batch = input_batch.to('cuda')
+    #     model.to('cuda')
     with torch.no_grad():
         output = model(input_batch)['out'][0]
     output_predictions = output.argmax(0)
