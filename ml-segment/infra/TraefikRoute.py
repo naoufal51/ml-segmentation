@@ -9,13 +9,11 @@ class TraefikRouteArgs:
             self,
             namespace: pulumi.Input[str],
             prefix: pulumi.Input[str],
-            service: kubernetes.core.v1.Service,
-            stripprefix: pulumi.Input[bool],
+            service: kubernetes.core.v1.Service
     ):
         self.namespace = namespace
         self.prefix = prefix
         self.service = service
-        self.stripprefix = stripprefix
 
 
 class TraefikRoute(pulumi.ComponentResource):
@@ -49,26 +47,25 @@ class TraefikRoute(pulumi.ComponentResource):
         #
 
         # Strip prefix
-        if args.stripprefix:
-            strip_prefix_middleware = kubernetes.apiextensions.CustomResource(
-                resource_name=f'{name}-strip-prefix',
-                api_version='traefik.containo.us/v1alpha1',
-                kind='Middleware',
-                metadata=kubernetes.meta.v1.ObjectMetaArgs(
-                    # annotations= {"pulumi.com/autonamed": "true" },
-                    name=f'{name}-strip-prefix-test',
-                    namespace=args.namespace
-                ),
-                spec={
-                    "stripPrefix": {
-                        "prefixes": [
-                            args.prefix  # args.prefix
-                        ],  # [args.prefix]
-                        "forceslash": True
-                    },
+        strip_prefix_middleware = kubernetes.apiextensions.CustomResource(
+            resource_name=f'{name}-strip-prefix',
+            api_version='traefik.containo.us/v1alpha1',
+            kind='Middleware',
+            metadata=kubernetes.meta.v1.ObjectMetaArgs(
+                # annotations= {"pulumi.com/autonamed": "true" },
+                name=f'{name}-strip-prefix-test',
+                namespace=args.namespace
+            ),
+            spec={
+                "stripPrefix": {
+                    "prefixes": [
+                        args.prefix  # args.prefix
+                    ],  # [args.prefix]
+                    "forceslash": True
                 },
-                opts=pulumi.ResourceOptions(provider=opts.provider)
-            )
+            },
+            opts=pulumi.ResourceOptions(provider=opts.provider)
+        )
 
         kubernetes.apiextensions.CustomResource(
             f'{name}-ingress-route',
@@ -80,8 +77,7 @@ class TraefikRoute(pulumi.ComponentResource):
             spec={
                 "entryPoints": ["web"],
                 "routes": [{
-                    # "match": f'PathPrefix(`{args.prefix}`)',  # 'PathPrefix(`'+args.prefix+'`)',
-                    "match": 'PathPrefix(`'+args.prefix+'`)',
+                    "match": f'PathPrefix(`{args.prefix}`)',  # 'PathPrefix(`'+args.prefix+'`)',
                     # "match": 'PathPrefix(`/`)',
                     "kind": "Rule",
                     "middlewares": [
@@ -95,8 +91,8 @@ class TraefikRoute(pulumi.ComponentResource):
                         }
                     ],
                     "services": [{
-                        "name": args.service if isinstance(args.service, str) else args.service.metadata.name,
-                        "port": 80 if isinstance(args.service, str) else args.service.spec.ports[0].port,
+                        "name": args.service.metadata.name,
+                        "port": args.service.spec.ports[0].port,
                     }],
                 }]
             }, opts=pulumi.ResourceOptions(provider=opts.provider
@@ -104,4 +100,3 @@ class TraefikRoute(pulumi.ComponentResource):
         )
 
         self.register_outputs({})
-
