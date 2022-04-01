@@ -6,7 +6,7 @@ PULUMI_CMD=pulumi --non-interactive --stack $(STACK_NAME) --cwd infra/
 
 
 install-deps :
-	apt install -y python3-testresources
+	sudo apt install -y python3-testresources
 
 	curl -fsSL https://get.pulumi.com | sh
 #	npm install -C infra/
