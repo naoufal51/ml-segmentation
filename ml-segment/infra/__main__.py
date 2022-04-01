@@ -70,7 +70,7 @@ ml = k8s.apps.v1.Deployment(
                         value='80',
                     )],
                 )],
-                service_account_name=basestack.require_output("modelServiceAccountName")
+                service_account_name=basestack.require_output("modelsServiceAccountName")
             ),
         ),
     ),
