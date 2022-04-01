@@ -17,6 +17,7 @@ provider = k8s.Provider('Provider', kubeconfig=basestack.require_output("kubecon
 repo = aws.ecr.Repository("ml-segment")
 
 
+
 # Get registry info (Cred and endpoint)
 def get_registry_info(rid):
     creds = aws.ecr.get_credentials(registry_id=rid)
